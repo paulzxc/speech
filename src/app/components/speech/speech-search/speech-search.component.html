@@ -1,0 +1,21 @@
+<div class="form-group">
+  <label for="query">Search speech:</label>
+  <input
+    type="text"
+    name="query"
+    id="query"
+    [(ngModel)]="query"
+    class="form-control"
+  />
+</div>
+
+<div class="list-group">
+  <a
+    class="list-group-item list-group-item-action"
+    *ngFor="let speech of speeches | speechFilter: query"
+    [routerLink]="['../', speech.id]"
+  >
+    {{ speech.title }} -
+    <small>{{ speech.content.toString().slice(0, 150) }}...</small>
+  </a>
+</div>

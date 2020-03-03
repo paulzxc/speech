@@ -1,0 +1,10 @@
+<ul class="list-group" *ngIf="speeches.length > 0">
+  <app-speech-item
+    *ngFor="let speech of speeches"
+    [speech]="speech"
+  ></app-speech-item>
+</ul>
+
+<p *ngIf="speeches.length < 1">
+  No available speech
+</p>

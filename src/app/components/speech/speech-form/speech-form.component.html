@@ -1,0 +1,197 @@
+<form [formGroup]="speechForm" *ngIf="speechForm">
+  <input type="hidden" formControlName="id" />
+  <input type="hidden" formControlName="title" *ngIf="editMode" />
+  <div class="form-group" *ngIf="newMode">
+    <label for="speech" class="sr-only">Title</label>
+    <input
+      type="text"
+      formControlName="title"
+      class="form-control"
+      name="title"
+      placeholder="Speech title"
+      id="title"
+      [ngClass]="{
+        'is-invalid':
+          (speechForm.controls.title.invalid &&
+            speechForm.controls.title.dirty) ||
+          (speechForm.controls.title.invalid &&
+            speechForm.controls.title.touched)
+      }"
+    />
+    <div class="invalid-feedback">
+      Please provide a valid title.
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="speech" class="sr-only">Content</label>
+    <textarea
+      name="content"
+      class="form-control"
+      id="content"
+      cols="30"
+      rows="10"
+      placeholder="Speech content shown here"
+      formControlName="content"
+      [readonly]="!editMode && !newMode"
+      [ngClass]="{
+        'is-invalid':
+          (speechForm.controls.content.invalid &&
+            speechForm.controls.content.dirty) ||
+          (speechForm.controls.content.invalid &&
+            speechForm.controls.content.touched)
+      }"
+    ></textarea>
+    <div class="invalid-feedback">
+      Please provide a valid content.
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="author" class="sr-only">Author</label>
+      <input
+        type="text"
+        name="author"
+        id="author"
+        class="form-control"
+        placeholder="Author"
+        formControlName="author"
+        [readonly]="!editMode && !newMode"
+        [ngClass]="{
+          'is-invalid':
+            (speechForm.controls.author.invalid &&
+              speechForm.controls.author.dirty) ||
+            (speechForm.controls.author.invalid &&
+              speechForm.controls.author.touched)
+        }"
+      />
+      <div class="invalid-feedback">
+        Please provide a valid author.
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="keywords" class="sr-only">Keywords</label>
+      <input
+        type="text"
+        name="keywords"
+        id="keywords"
+        class="form-control"
+        placeholder="Subject area keywords"
+        formControlName="keywords"
+        [readonly]="!editMode && !newMode"
+        [ngClass]="{
+          'is-invalid':
+            (speechForm.controls.keywords.invalid &&
+              speechForm.controls.keywords.dirty) ||
+            (speechForm.controls.keywords.invalid &&
+              speechForm.controls.keywords.touched)
+        }"
+      />
+      <div class="invalid-feedback">
+        Please provide a valid keywords.
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="date" class="sr-only">Date</label>
+      <input
+        type="date"
+        name="date"
+        id="date"
+        class="form-control"
+        formControlName="date"
+        [readonly]="!editMode && !newMode"
+        [ngClass]="{
+          'is-invalid':
+            (speechForm.controls.date.invalid &&
+              speechForm.controls.date.dirty) ||
+            (speechForm.controls.date.invalid &&
+              speechForm.controls.date.touched)
+        }"
+      />
+      <div class="invalid-feedback">
+        Please provide a valid date.
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div
+      class="form-group col-sm-6 offset-sm-6 col-lg-4 offset-lg-8 col-xl-3 offset-xl-9 justify-content-end d-flex"
+    >
+      <button
+        type="button"
+        class="btn btn-danger"
+        [disabled]="!editMode"
+        data-target="#delete-speech-modal"
+        (click)="open(deleteConfirmationModal)"
+        *ngIf="!newMode"
+      >
+        Delete
+      </button>
+      <button
+        type="button"
+        class="btn btn-success"
+        [disabled]="!editMode || speechForm.invalid || speechForm.pristine"
+        (click)="onFormSave()"
+        *ngIf="!newMode"
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="!editMode"
+        (click)="onFormShare()"
+        *ngIf="!newMode"
+      >
+        Share
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        *ngIf="newMode"
+        (click)="onFormAdd()"
+        [disabled]="speechForm.pristine || speechForm.invalid"
+      >
+        Add
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        *ngIf="newMode"
+        (click)="onFormReset()"
+        [disabled]="speechForm.pristine"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- MODAL -->
+<ng-template #deleteConfirmationModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Delete Speech
+    </h4>
+  </div>
+  <div class="modal-body">
+    You are about to delete {{ speechForm.controls.title.value }}?
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-danger"
+      (click)="onFormDelete(modal)"
+    >
+      Delete
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+<!-- ALERT -->
+<ngb-alert *ngIf="isAlertVisible" type="success" [dismissible]="false">
+  {{ alertMessage }}</ngb-alert
+>
